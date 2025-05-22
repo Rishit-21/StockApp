@@ -51,9 +51,20 @@ public class HistoricalDataService : IHistoricalDataService
 
         if (mockHistoricalData.Any())
         {
-            // Optional: Check for existing data to avoid duplicates
-            // This can be complex depending on desired granularity (e.g., daily overwrite vs. append)
-            // For simplicity, we'll assume we are fetching unique data or overwriting.
+            // Clear existing historical data for this stock for the fetched period
+            // More sophisticated logic might be needed if only fetching partial updates,
+            // but for a full N-year refresh, clearing is simpler.
+            _logger.LogInformation($"Clearing existing historical data for {stock.Symbol} before adding new set.");
+            var existingPrices = await _historicalPriceRepository.FindAsync(hp => hp.StockId == stock.Id); // Get all for the stock
+            foreach (var oldPrice in existingPrices)
+            {
+                _historicalPriceRepository.Remove(oldPrice);
+            }
+            if (existingPrices.Any())
+            {
+                await _historicalPriceRepository.SaveChangesAsync(); // Commit deletions
+                _logger.LogInformation($"Cleared {existingPrices.Count()} existing historical price points for {stock.Symbol}.");
+            }
 
             await _historicalPriceRepository.AddRangeAsync(mockHistoricalData);
             await _historicalPriceRepository.SaveChangesAsync(); // Use SaveChangesAsync from the repository
