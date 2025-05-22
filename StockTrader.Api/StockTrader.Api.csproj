@@ -16,8 +16,4 @@
     <ProjectReference Include="..\StockTrader.Service\StockTrader.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <InternalsVisibleTo Include="StockTrader.Api.Tests" />
-  </ItemGroup>
-
 </Project>
