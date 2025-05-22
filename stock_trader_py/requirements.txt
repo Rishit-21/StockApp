@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+pyodbc
+apscheduler
+requests
+python-dotenv
+# For SQLite, if used as default, ensure built-in support or add 'pysqlite3' if needed by specific python/OS, though often not required.
+# For ML/NLP later (placeholders for now, can be commented out initially):
+# nltk
+# spacy
+# scikit-learn
+# tensorflow
